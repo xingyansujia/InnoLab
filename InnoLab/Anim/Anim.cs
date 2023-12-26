@@ -85,6 +85,11 @@ namespace InnoLab
             {
                 GO.GO.Instance.StopAnim(m_name);
             }
+
+            public void Reverse()
+            {
+                // TODO
+            }
         }
 
     }

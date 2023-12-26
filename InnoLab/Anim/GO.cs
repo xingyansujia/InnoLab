@@ -15,8 +15,8 @@ namespace InnoLab
             {
                 private static GameObject m_gameObject;
                 private static GO _instance = null;
-                private static List<string> m_anime_id = new List<string>();
-                private static Dictionary<string, Coroutine> m_animes = new Dictionary<string, Coroutine>();
+                private static List<string> m_anim_id = new List<string>();
+                private static Dictionary<string, Coroutine> m_anims = new Dictionary<string, Coroutine>();
                 
                 public static GO Instance
                 {
@@ -34,24 +34,24 @@ namespace InnoLab
                 {
                     DontDestroyOnLoad(m_gameObject);
                 }
-                public void StartAnim(Anim anime)
+                public void StartAnim(Anim anim)
                 {   
-                    m_anime_id.Add(anime.GetName());
+                    m_anim_id.Add(anim.GetName());
 
-                    Coroutine temp = this.StartCoroutine(_StartAnime(anime.GetAnimFunc(),
-                                                                     anime.GetDuration(),
-                                                                     anime.GetAction(),
-                                                                     anime.GetOnComplete(),
-                                                                     anime.GetName())
+                    Coroutine temp = this.StartCoroutine(_StartAnime(anim.GetAnimFunc(),
+                                                                     anim.GetDuration(),
+                                                                     anim.GetAction(),
+                                                                     anim.GetOnComplete(),
+                                                                     anim.GetName())
                                                         );
                     
-                    m_animes.Add(anime.GetName(), temp);
+                    m_anims.Add(anim.GetName(), temp);
                     //Debug.Log(m_animes.Count);
                 }
 
                 public void StopAnim(string name)
                 {
-                    m_anime_id.Remove(name);
+                    m_anim_id.Remove(name);
                 }
 
                 private IEnumerator _StartAnime(CurveFunc curveFunc, 
@@ -67,20 +67,21 @@ namespace InnoLab
                     float x = 0;
                     for (int i = 0; i < count; i++)
                     {
-                        if (!m_anime_id.Contains(name))
+                        if (!m_anim_id.Contains(name))
                         {
-                            StopCoroutine(m_animes[name]);
-                            m_animes.Remove(name);
+                            StopCoroutine(m_anims[name]);
+                            m_anims.Remove(name);
                         }
+                        Debug.Log(curveFunc(x));
                         action(curveFunc(x));
                         x += step;
                         yield return new WaitForFixedUpdate();
                     }
 
                     if (onComplete != null) onComplete();
-                    Debug.Log(m_animes.Count);
-                    m_anime_id.Remove(name);
-                    m_animes.Remove(name);
+                    Debug.Log(m_anims.Count);
+                    m_anim_id.Remove(name);
+                    m_anims.Remove(name);
                 }
             }
 

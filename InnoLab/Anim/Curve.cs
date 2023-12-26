@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using System;
+using UnityEngine;
 
 namespace InnoLab
 {
@@ -44,6 +45,7 @@ namespace InnoLab
                 {
                     return (float t) =>
                     {
+                        // TODO replace with recursive_bezier (de Casteljau's algorithm)
                         return CubicBezier(p1, p3)(CubicBezier(p0,p2)(t)); // y(x(t))
                     };
                 }
@@ -54,6 +56,12 @@ namespace InnoLab
                     {
                         return (float)(p0 * 3 * Math.Pow(1 - t, 2) * t + p1 * 3 * Math.Pow(t, 2) * (1 - t) +  Math.Pow(t, 3));
                     };
+                }
+
+                private static Vector2 recursive_bezier(List<Vector2> control_points, float t)
+                {
+                    // TODO Implement de Casteljau's algorithm
+
                 }
 
                 /// <summary>
